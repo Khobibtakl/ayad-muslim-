@@ -1,0 +1,201 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Node.js - without lockfile caching
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          package-manager-cache: false
+
+      # 2. Java for Android
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '21'
+
+      # 3. Verify npm registry and repair the known bad version
+      - name: Check and fix Trapeze dependency
+        run: |
+          npm config set registry https://registry.npmjs.org/
+
+          npm view @trapezedev/gradle-parse@7.1.10 version
+
+          node <<'NODE'
+          const fs = require('fs');
+
+          if (!fs.existsSync('package.json')) {
+            console.error('ERROR: package.json is missing from repository root.');
+            process.exit(1);
+          }
+
+          const p = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const name = '@trapezedev/gradle-parse';
+
+          for (const section of [
+            'dependencies',
+            'devDependencies',
+            'optionalDependencies',
+            'peerDependencies'
+          ]) {
+            if (p[section] && p[section][name]) {
+              console.log(`${section}: ${p[section][name]}`);
+
+              if (p[section][name] === '7.1.11') {
+                p[section][name] = '7.1.10';
+                console.log('Changed unavailable version to 7.1.10');
+              }
+            }
+          }
+
+          fs.writeFileSync(
+            'package.json',
+            JSON.stringify(p, null, 2) + '\n'
+          );
+          NODE
+
+      # 4. Install project dependencies
+      - name: Install npm dependencies
+        run: |
+          npm install --legacy-peer-deps --no-audit --no-fund
+
+      # 5. Install Capacitor packages
+      - name: Install Capacitor packages
+        run: |
+          npm install react-is \
+            @capacitor/core \
+            @capacitor/cli \
+            @capacitor/android \
+            @capacitor/assets \
+            @capacitor/share \
+            @capacitor/filesystem \
+            --legacy-peer-deps --no-audit --no-fund
+
+      # 6. Build the web application
+      - name: Build Web App
+        run: npm run build
+
+      # 7. Create Capacitor configuration
+      - name: Configure Capacitor
+        run: |
+          rm -f capacitor.config.ts capacitor.config.json
+
+          cat > capacitor.config.json <<'EOF'
+          {
+            "appId": "khubaibtakl.ayad.muslim.afg",
+            "appName": "د مسلمان ملګری",
+            "webDir": "dist",
+            "bundledWebRuntime": false
+          }
+          EOF
+
+          if [ ! -d dist ]; then
+            echo "ERROR: dist folder not found. Check webDir and build output."
+            exit 1
+          fi
+
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
+
+          npx cap sync android
+
+      # 8. Generate Android icon
+      - name: Generate Icon
+        run: |
+          if [ -f logo.png ]; then
+            mkdir -p assets
+            cp logo.png assets/icon.png
+            npx capacitor-assets generate --android
+          else
+            echo "logo.png not found; keeping default icon."
+          fi
+
+      # 9. Configure manifest safely
+      - name: Configure Android Manifest
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path("android/app/src/main/AndroidManifest.xml")
+          s = p.read_text(encoding="utf-8")
+
+          permissions = [
+              "android.permission.INTERNET",
+              "android.permission.READ_EXTERNAL_STORAGE",
+              "android.permission.WRITE_EXTERNAL_STORAGE",
+          ]
+
+          for perm in permissions:
+              if not re.search(
+                  r'<uses-permission\b[^>]*android:name="' +
+                  re.escape(perm) + r'"',
+                  s
+              ):
+                  match = re.search(r'<manifest\b[^>]*>', s)
+                  if not match:
+                      raise SystemExit("Invalid AndroidManifest.xml")
+                  s = (
+                      s[:match.end()] +
+                      f'\n    <uses-permission android:name="{perm}" />' +
+                      s[match.end():]
+                  )
+
+          match = re.search(r'<application\b[^>]*>', s)
+          if not match:
+              raise SystemExit("application tag not found")
+
+          tag = match.group(0)
+
+          attrs = {
+              "android:usesCleartextTraffic": "true",
+              "android:requestLegacyExternalStorage": "true",
+          }
+
+          for key, value in attrs.items():
+              if re.search(r'\b' + re.escape(key) + r'\s*=', tag):
+                  tag = re.sub(
+                      r'\b' + re.escape(key) + r'\s*=\s*"[^"]*"',
+                      f'{key}="{value}"',
+                      tag
+                  )
+              else:
+                  tag = tag[:-1] + f' {key}="{value}">'
+
+          s = s[:match.start()] + tag + s[match.end():]
+          p.write_text(s, encoding="utf-8")
+          PY
+
+      # 10. Build APK
+      - name: Build Android APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      # 11. Upload APK
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Muslim-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
