@@ -1,0 +1,395 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg-canvas: #eff4f1;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #e7efe9;
+  --text-primary: #0b1c16;
+  --text-secondary: #334a41;
+  --text-muted: #566b63;
+  --border-subtle: rgba(13, 31, 25, 0.11);
+  --border-strong: rgba(13, 31, 25, 0.2);
+  --accent-primary: #0b5d43;
+  --accent-primary-hover: #084733;
+  --accent-gold: #b88a2e;
+  --accent-soft: rgba(11, 93, 67, 0.12);
+  --glass-surface: rgba(255, 255, 255, 0.72);
+  --glass-elevated: rgba(255, 255, 255, 0.8);
+  --glass-alt: rgba(242, 248, 244, 0.58);
+  --glass-bar: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.62);
+  --glass-specular: rgba(255, 255, 255, 0.85);
+  --backdrop-scrim: linear-gradient(155deg, rgba(244, 249, 246, 0.58) 0%, rgba(235, 243, 239, 0.68) 100%);
+  --shadow-card: 0 4px 16px -4px rgba(10, 28, 22, 0.08), 0 1px 2px rgba(10, 28, 22, 0.04);
+  --shadow-elevated: 0 14px 40px -12px rgba(10, 28, 22, 0.18), 0 4px 12px -4px rgba(10, 28, 22, 0.08);
+  --pattern-opacity: 0.045;
+  --app-font-body: 'Plus Jakarta Sans', 'Noto Naskh Arabic', system-ui, sans-serif;
+  --app-font-arabic: 'Amiri', 'Scheherazade New', 'Noto Naskh Arabic', serif;
+  --app-font-size: 16px;
+  --app-line-height: 1.75;
+}
+
+.dark {
+  --bg-canvas: #07100d;
+  --bg-surface: #0e1c18;
+  --bg-surface-alt: #152822;
+  --text-primary: #f1f7f4;
+  --text-secondary: #c1d2ca;
+  --text-muted: #8fa49b;
+  --border-subtle: rgba(237, 244, 241, 0.12);
+  --border-strong: rgba(237, 244, 241, 0.22);
+  --accent-primary: #21ad7d;
+  --accent-primary-hover: #2ac48f;
+  --accent-gold: #e4b755;
+  --accent-soft: rgba(33, 173, 125, 0.18);
+  --glass-surface: rgba(11, 24, 20, 0.68);
+  --glass-elevated: rgba(14, 30, 25, 0.78);
+  --glass-alt: rgba(20, 39, 33, 0.56);
+  --glass-bar: rgba(9, 20, 17, 0.74);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-specular: rgba(255, 255, 255, 0.14);
+  --backdrop-scrim: linear-gradient(155deg, rgba(5, 14, 11, 0.56) 0%, rgba(7, 18, 14, 0.7) 100%);
+  --shadow-card: 0 8px 24px -6px rgba(0, 0, 0, 0.42), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 20px 50px -12px rgba(0, 0, 0, 0.62), 0 6px 18px -4px rgba(0, 0, 0, 0.42);
+  --pattern-opacity: 0.055;
+}
+
+/* Theme variants applied via data-theme on html */
+html[data-theme='emerald'] {
+  --bg-canvas: #e9f3ed;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #dcece2;
+  --text-primary: #092118;
+  --text-secondary: #284b3d;
+  --text-muted: #4b6d5f;
+  --border-subtle: rgba(11, 93, 67, 0.14);
+  --border-strong: rgba(11, 93, 67, 0.26);
+  --accent-primary: #0b5d43;
+  --accent-primary-hover: #084833;
+  --accent-gold: #b58427;
+  --accent-soft: rgba(11, 93, 67, 0.13);
+  --glass-surface: rgba(246, 252, 248, 0.72);
+  --glass-elevated: rgba(252, 255, 253, 0.8);
+  --glass-alt: rgba(230, 244, 236, 0.56);
+  --glass-bar: rgba(245, 252, 248, 0.74);
+  --glass-border: rgba(255, 255, 255, 0.68);
+  --glass-specular: rgba(255, 255, 255, 0.88);
+  --backdrop-scrim: linear-gradient(155deg, rgba(232, 245, 238, 0.52) 0%, rgba(217, 236, 226, 0.64) 100%);
+}
+
+html[data-theme='gold'] {
+  --bg-canvas: #f8f2e6;
+  --bg-surface: #fffdf8;
+  --bg-surface-alt: #efe4ce;
+  --text-primary: #261d0f;
+  --text-secondary: #56452d;
+  --text-muted: #7a674c;
+  --border-subtle: rgba(145, 108, 36, 0.16);
+  --border-strong: rgba(145, 108, 36, 0.28);
+  --accent-primary: #9a6e1c;
+  --accent-primary-hover: #7d5712;
+  --accent-gold: #c7932d;
+  --accent-soft: rgba(154, 110, 28, 0.13);
+  --glass-surface: rgba(255, 252, 244, 0.74);
+  --glass-elevated: rgba(255, 253, 248, 0.82);
+  --glass-alt: rgba(246, 237, 217, 0.58);
+  --glass-bar: rgba(255, 251, 242, 0.76);
+  --glass-border: rgba(255, 250, 235, 0.7);
+  --glass-specular: rgba(255, 255, 255, 0.88);
+  --backdrop-scrim: linear-gradient(155deg, rgba(250, 242, 224, 0.52) 0%, rgba(242, 230, 204, 0.64) 100%);
+}
+
+html[data-theme='islamic-blue'] {
+  --bg-canvas: #ebf1f9;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #dde7f5;
+  --text-primary: #0d1c34;
+  --text-secondary: #334768;
+  --text-muted: #586c8c;
+  --border-subtle: rgba(19, 64, 130, 0.14);
+  --border-strong: rgba(19, 64, 130, 0.25);
+  --accent-primary: #164e8c;
+  --accent-primary-hover: #103c6e;
+  --accent-gold: #b8882c;
+  --accent-soft: rgba(22, 78, 140, 0.12);
+  --glass-surface: rgba(245, 249, 255, 0.74);
+  --glass-elevated: rgba(252, 254, 255, 0.82);
+  --glass-alt: rgba(228, 238, 251, 0.58);
+  --glass-bar: rgba(245, 249, 255, 0.74);
+  --glass-border: rgba(255, 255, 255, 0.68);
+  --glass-specular: rgba(255, 255, 255, 0.88);
+  --backdrop-scrim: linear-gradient(155deg, rgba(232, 241, 252, 0.52) 0%, rgba(219, 232, 248, 0.64) 100%);
+}
+
+html[data-theme='minimal-white'] {
+  --bg-canvas: #f8faf9;
+  --bg-surface: #ffffff;
+  --bg-surface-alt: #eff2f0;
+  --text-primary: #121514;
+  --text-secondary: #434b48;
+  --text-muted: #6c7672;
+  --border-subtle: rgba(0, 0, 0, 0.09);
+  --border-strong: rgba(0, 0, 0, 0.17);
+  --accent-primary: #155e47;
+  --accent-primary-hover: #0f4634;
+  --accent-gold: #a67c2e;
+  --accent-soft: rgba(21, 94, 71, 0.1);
+  --glass-surface: rgba(255, 255, 255, 0.76);
+  --glass-elevated: rgba(255, 255, 255, 0.85);
+  --glass-alt: rgba(243, 246, 244, 0.62);
+  --glass-bar: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-specular: rgba(255, 255, 255, 0.92);
+  --backdrop-scrim: linear-gradient(155deg, rgba(250, 252, 251, 0.62) 0%, rgba(242, 245, 244, 0.74) 100%);
+}
+
+html[data-theme='night-black'] {
+  --bg-canvas: #030504;
+  --bg-surface: #0b0f0e;
+  --bg-surface-alt: #131a18;
+  --text-primary: #f4f7f5;
+  --text-secondary: #b7c2bc;
+  --text-muted: #88948e;
+  --border-subtle: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --accent-primary: #27a87d;
+  --accent-primary-hover: #32bf8f;
+  --accent-gold: #deb253;
+  --accent-soft: rgba(39, 168, 125, 0.18);
+  --glass-surface: rgba(10, 14, 13, 0.7);
+  --glass-elevated: rgba(14, 20, 18, 0.8);
+  --glass-alt: rgba(20, 28, 25, 0.58);
+  --glass-bar: rgba(8, 12, 11, 0.76);
+  --glass-border: rgba(255, 255, 255, 0.13);
+  --glass-specular: rgba(255, 255, 255, 0.1);
+  --backdrop-scrim: linear-gradient(155deg, rgba(2, 4, 4, 0.64) 0%, rgba(4, 7, 6, 0.78) 100%);
+}
+
+html[data-theme='desert-sand'] {
+  --bg-canvas: #f2e9dc;
+  --bg-surface: #fdfaf5;
+  --bg-surface-alt: #e8dbc6;
+  --text-primary: #292017;
+  --text-secondary: #584938;
+  --text-muted: #7c6a56;
+  --border-subtle: rgba(94, 79, 63, 0.15);
+  --border-strong: rgba(94, 79, 63, 0.27);
+  --accent-primary: #7c582b;
+  --accent-primary-hover: #62441f;
+  --accent-gold: #b58328;
+  --accent-soft: rgba(124, 88, 43, 0.13);
+  --glass-surface: rgba(253, 248, 240, 0.74);
+  --glass-elevated: rgba(255, 252, 247, 0.83);
+  --glass-alt: rgba(241, 229, 210, 0.58);
+  --glass-bar: rgba(252, 247, 239, 0.76);
+  --glass-border: rgba(255, 250, 242, 0.68);
+  --glass-specular: rgba(255, 255, 255, 0.86);
+  --backdrop-scrim: linear-gradient(155deg, rgba(245, 235, 220, 0.52) 0%, rgba(235, 222, 201, 0.64) 100%);
+}
+
+html[data-theme='royal-islamic'] {
+  --bg-canvas: #051611;
+  --bg-surface: #0b241d;
+  --bg-surface-alt: #123329;
+  --text-primary: #f6f3e8;
+  --text-secondary: #ced2c3;
+  --text-muted: #98a291;
+  --border-subtle: rgba(217, 172, 76, 0.24);
+  --border-strong: rgba(217, 172, 76, 0.4);
+  --accent-primary: #d9ac4c;
+  --accent-primary-hover: #e5bd67;
+  --accent-gold: #e5bd67;
+  --accent-soft: rgba(217, 172, 76, 0.17);
+  --glass-surface: rgba(9, 29, 23, 0.68);
+  --glass-elevated: rgba(12, 37, 29, 0.78);
+  --glass-alt: rgba(18, 48, 38, 0.56);
+  --glass-bar: rgba(7, 23, 18, 0.74);
+  --glass-border: rgba(229, 189, 103, 0.22);
+  --glass-specular: rgba(255, 236, 178, 0.14);
+  --backdrop-scrim: linear-gradient(155deg, rgba(4, 18, 14, 0.54) 0%, rgba(6, 24, 18, 0.7) 100%);
+}
+
+body {
+  background-color: var(--bg-canvas);
+  background-image: radial-gradient(ellipse 85% 45% at 50% -10%, var(--accent-soft), transparent 72%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--app-font-body);
+  font-size: var(--app-font-size);
+  line-height: var(--app-line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+
+h1, h2, h3, h4 {
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.font-arabic {
+  font-family: var(--app-font-arabic);
+  line-height: 2.1;
+}
+
+.font-mono-tabular {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle Islamic 8-point star geometric watermark */
+.islamic-pattern-bg {
+  background-image:
+    radial-gradient(ellipse 80% 55% at 50% 0%, var(--accent-soft), transparent 70%),
+    url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23888888' stroke-opacity='0.14' stroke-width='0.9'%3E%3Cpolygon points='36,4 44,28 68,36 44,44 36,68 28,44 4,36 28,28'/%3E%3Crect x='14' y='14' width='44' height='44'/%3E%3Crect x='14' y='14' width='44' height='44' transform='rotate(45 36 36)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%, 72px 72px;
+}
+
+/* Complete Liquid Frosted Glass Surface System */
+.surface-card {
+  background-color: var(--glass-surface);
+  backdrop-filter: blur(22px) saturate(175%);
+  -webkit-backdrop-filter: blur(22px) saturate(175%);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-specular), var(--shadow-card);
+  transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.surface-elevated {
+  background-color: var(--glass-elevated);
+  backdrop-filter: blur(28px) saturate(185%);
+  -webkit-backdrop-filter: blur(28px) saturate(185%);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-specular), var(--shadow-elevated);
+}
+
+.surface-alt {
+  background-color: var(--glass-alt);
+  backdrop-filter: blur(14px) saturate(155%);
+  -webkit-backdrop-filter: blur(14px) saturate(155%);
+  border: 1px solid var(--border-subtle);
+  box-shadow: inset 0 1px 0 var(--glass-specular);
+}
+
+.glass-bar {
+  background-color: var(--glass-bar);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border-color: var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-specular);
+}
+
+.interactive-tile {
+  background-color: var(--glass-surface);
+  backdrop-filter: blur(20px) saturate(175%);
+  -webkit-backdrop-filter: blur(20px) saturate(175%);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--glass-specular), var(--shadow-card);
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.interactive-tile:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent-primary) 50%, var(--glass-border));
+  box-shadow: inset 0 1px 0 var(--glass-specular), var(--shadow-elevated);
+}
+
+.interactive-tile:active {
+  transform: translateY(0) scale(0.985);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-hover));
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 18px -4px color-mix(in srgb, var(--accent-primary) 50%, transparent);
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1), opacity 140ms ease, box-shadow 180ms ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.96;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 22px -4px color-mix(in srgb, var(--accent-primary) 60%, transparent);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.modern-input {
+  background-color: var(--glass-alt);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.modern-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  background-color: var(--glass-elevated);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+@keyframes eyad-shimmer-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.shimmer-bar-track {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-surface-alt);
+}
+
+.shimmer-bar-fill {
+  position: absolute;
+  inset-block: 0;
+  width: 45%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-gold));
+  animation: eyad-shimmer-slide 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 9999px;
+}
+
+/* Leaflet map container fix */
+.leaflet-container {
+  font-family: var(--app-font-body);
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,25 @@
+import '@fontsource/amiri/400.css';
+import '@fontsource/amiri/700.css';
+import '@fontsource/noto-naskh-arabic/400.css';
+import '@fontsource/noto-naskh-arabic/600.css';
+import '@fontsource/noto-naskh-arabic/700.css';
+import '@fontsource/noto-kufi-arabic/400.css';
+import '@fontsource/noto-kufi-arabic/600.css';
+import '@fontsource/noto-kufi-arabic/700.css';
+import '@fontsource/lateef/400.css';
+import '@fontsource/lateef/700.css';
+import '@fontsource/scheherazade-new/400.css';
+import '@fontsource/scheherazade-new/700.css';
+import '@fontsource/vazirmatn/400.css';
+import '@fontsource/vazirmatn/600.css';
+import '@fontsource/vazirmatn/700.css';
+import '@fontsource/plus-jakarta-sans/400.css';
+import '@fontsource/plus-jakarta-sans/600.css';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/600.css';
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
+
+createRoot(document.getElementById('root')!).render(<App />);

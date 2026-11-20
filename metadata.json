@@ -1,0 +1,6 @@
+{
+  "name": "إِيَادُ المُسْلِم – د مسلمان ملګری",
+  "description": "جامع اسلامي اپلیکیشن: قرآن کریم، تفسیر، حدیث، اذکار، لمونځونه، قبله، جوماتونه، کتابتون، تسبیح، زکات، دندې او هوښیار اسلامي مرستیال.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
